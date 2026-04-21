@@ -1,0 +1,80 @@
+@model PortalAcademico.ViewModels.CatalogoIndexViewModel
+
+@{
+    ViewData["Title"] = "Catálogo de Cursos";
+}
+
+<h2 class="mb-4">Catálogo de Cursos Disponibles</h2>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <strong>Filtros de Búsqueda</strong>
+    </div>
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label asp-for="BuscarNombre" class="form-label"></label>
+                    <input asp-for="BuscarNombre" class="form-control" placeholder="Ej. Programación" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="MinCreditos" class="form-label"></label>
+                    <input asp-for="MinCreditos" class="form-control" type="number" />
+                    <span asp-validation-for="MinCreditos" class="text-danger" style="font-size:0.8em"></span>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="MaxCreditos" class="form-label"></label>
+                    <input asp-for="MaxCreditos" class="form-control" type="number" />
+                    <span asp-validation-for="MaxCreditos" class="text-danger" style="font-size:0.8em"></span>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="HorarioInicio" class="form-label"></label>
+                    <input asp-for="HorarioInicio" class="form-control" type="time" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="HorarioFin" class="form-label"></label>
+                    <input asp-for="HorarioFin" class="form-control" type="time" />
+                    <span asp-validation-for="HorarioFin" class="text-danger" style="font-size:0.8em"></span>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var item in Model.Cursos)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">@item.Nombre</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.Codigo</h6>
+                    <p class="card-text">
+                        <strong>Créditos:</strong> @item.Creditos <br />
+                        <strong>Cupo:</strong> @item.CupoMaximo <br />
+                        <strong>Horario:</strong> @item.HorarioInicio.ToString(@"hh\:mm") - @item.HorarioFin.ToString(@"hh\:mm")
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary w-100">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @if (!Model.Cursos.Any())
+    {
+        <div class="col-12">
+            <div class="alert alert-warning">No se encontraron cursos con los filtros aplicados.</div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
