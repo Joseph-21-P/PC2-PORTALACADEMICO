@@ -1,0 +1,40 @@
+@model PortalAcademico.Models.Curso
+
+@{
+    ViewData["Title"] = "Confirmar Inscripción";
+}
+
+<div class="container mt-4">
+    <h2>Confirmar Inscripción</h2>
+    <hr />
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Estás a punto de inscribirte en:</h5>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">@Model.Nombre</h3>
+            <h6 class="card-subtitle mb-3 text-muted">Código: @Model.Codigo</h6>
+            
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Créditos:</strong> @Model.Creditos</li>
+                <li class="list-group-item"><strong>Cupo Máximo:</strong> @Model.CupoMaximo</li>
+                <li class="list-group-item"><strong>Horario:</strong> @Model.HorarioInicio.ToString(@"hh\:mm") - @Model.HorarioFin.ToString(@"hh\:mm")</li>
+            </ul>
+
+            <form asp-action="InscripcionConfirmada" method="post">
+                <input type="hidden" name="cursoId" value="@Model.Id" />
+                <button type="submit" class="btn btn-success btn-lg">Confirmar Inscripción</button>
+                <a asp-controller="Cursos" asp-action="Index" class="btn btn-outline-secondary btn-lg ms-2">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
