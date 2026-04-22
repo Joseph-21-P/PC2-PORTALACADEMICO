@@ -2,7 +2,7 @@
 
 **URLs del Proyecto:**
 * **GitHub:** https://github.com/TuUsuario/PC2-PORTALACADEMICO
-* **Render:** 
+* **Render:** https://pc2-portalacademico.onrender.com
 
 ## Ejecución Local
 1. Clonar el repositorio.
