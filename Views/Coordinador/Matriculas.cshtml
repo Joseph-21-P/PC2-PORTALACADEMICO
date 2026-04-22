@@ -1,0 +1,47 @@
+@model PortalAcademico.Models.Curso
+@{ ViewData["Title"] = "Matrículas del Curso"; }
+
+<h2>Matrículas: @Model.Nombre (@Model.Codigo)</h2>
+<p><a asp-action="Index" class="btn btn-secondary">Volver al Panel</a></p>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-info">@TempData["Mensaje"]</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Usuario (Email)</th>
+            <th>Fecha Solicitud</th>
+            <th>Estado Actual</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var m in Model.Matriculas) {
+        <tr>
+            <td>@m.Usuario.Email</td>
+            <td>@m.FechaRegistro.ToLocalTime().ToString("g")</td>
+            <td><strong>@m.Estado</strong></td>
+            <td>
+                @if (m.Estado == PortalAcademico.Models.EstadoMatricula.Pendiente)
+                {
+                    <form asp-action="CambiarEstadoMatricula" method="post" style="display:inline;">
+                        <input type="hidden" name="matriculaId" value="@m.Id" />
+                        <input type="hidden" name="cursoId" value="@Model.Id" />
+                        <input type="hidden" name="nuevoEstado" value="Confirmada" />
+                        <button type="submit" class="btn btn-sm btn-success">Confirmar</button>
+                    </form>
+                    <form asp-action="CambiarEstadoMatricula" method="post" style="display:inline;">
+                        <input type="hidden" name="matriculaId" value="@m.Id" />
+                        <input type="hidden" name="cursoId" value="@Model.Id" />
+                        <input type="hidden" name="nuevoEstado" value="Cancelada" />
+                        <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
+                    </form>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
